@@ -19,9 +19,14 @@ buildscript {
             name = "sonatype"
             url = "https://oss.sonatype.org/content/repositories/snapshots/"
         }
+        maven {
+        	name= "barometer"
+        	url = "https://dl.bintray.com/jjtparadox/MC"
+        }
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+        classpath 'com.jjtparadox.barometer:Barometer:+'
     }
 }
 /*
@@ -54,11 +59,16 @@ repositories {
         name = "CoFH Maven"
         url = "https://maven.covers1624.net"
     }
+    maven {
+        name = "Barometer Repo"
+        url = "https://dl.bintray.com/jjtparadox/MC"
+    }
 }
 
 apply plugin: 'net.minecraftforge.gradle.forge'
 apply plugin: 'maven'
 apply plugin: 'maven-publish'
+apply plugin: 'com.jjtparadox.barometer'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -131,6 +141,8 @@ dependencies {
     deobfCompile "mcjty.theoneprobe:TheOneProbe-1.12:${config.probe_version}"
     deobfCompile "cofh:RedstoneFlux:${config.redstoneflux_version}:universal"
     deployerJars 'org.apache.maven.wagon:wagon-ssh:2.2'
+
+    testCompile 'com.jjtparadox.barometer:Barometer:+'
 }
 
 sourceSets {
@@ -266,4 +278,11 @@ publishing {
             maven { url DEPLOY_DIR }
         }
     }
+}
+
+barometer {
+    testServerDir = 'testing' // Optional. Defaults to "runDir/test"
+    
+    // NOTE: By using the following statement in your code you are indicating your agreement to the Minecraft EULA (https://account.mojang.com/documents/minecraft_eula).
+    acceptEula()
 }
